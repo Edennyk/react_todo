@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AddTodo from '../AddTodo/AddTodo';
 import Todo from '../Todo/Todo';
 import styles from './TodoList.module.css'
@@ -9,7 +9,7 @@ const InitTodoList = [
 ];
 
 export default function TodoList({filter}){
-    const [todos, setTodos] = useState(InitTodoList);
+    const [todos, setTodos] = useState(readTodos);
 
     //  새롭게 추가 되는 todo를 받아서 새로운 todo를 추가 하면 된다
     const handleAdd = (todo) =>{
@@ -20,6 +20,10 @@ export default function TodoList({filter}){
     const handleUpdate = (updated) => setTodos(todos.map(todo => todo.id === updated.id ? updated : todo));
 
     const handleDelete = (deleted) => setTodos(todos.filter(todo => todo.id !== deleted.id));
+
+    useEffect(()=>{
+        localStorage.setItem('todos', JSON.stringify(todos));
+    },[todos]);
     
     const filterd = getFilterdItems(todos, filter);
     return(
@@ -35,6 +39,10 @@ export default function TodoList({filter}){
     )
 }
 
+function readTodos(){
+    const todos = localStorage.getItem('todos');
+    return todos ? JSON.parse(todos) : [];
+}
 
 function getFilterdItems(todos, filter){
     if(filter === 'all') { return todos;}

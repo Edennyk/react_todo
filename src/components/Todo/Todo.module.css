@@ -28,6 +28,6 @@
     transform: rotate(15deg) scale(1.2);
 }
 .button{
-    color: var(--color-text);
+    color: var(--color-lighter);
     background-color: transparent;
 }
